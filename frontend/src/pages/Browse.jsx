@@ -18,14 +18,14 @@ export default function Browse({ mediaType = 'movie' }) {
   const [count, setCount]           = useState(0);
   const [activeGenres, setGenres]   = useState([]);
   const [sort, setSort]             = useState('popular');
-  const [yearFrom, setYearFrom]     = useState('2000');
-  const [yearTo, setYearTo]         = useState('2025');
+  const [yearFrom, setYearFrom]     = useState('1900');
+  const [yearTo, setYearTo]         = useState(new Date().getFullYear() + 5);
   const [quickQ, setQuickQ]         = useState('');
 
-  const fetch = useCallback(async () => {
+  const loadMovies = useCallback(async () => {
     setLoading(true);
     try {
-      const params = { type: mediaType, sort, yearFrom, yearTo, limit: 50 };
+      const params = { type: mediaType, sort, yearFrom, yearTo, limit: 200 };
       if (activeGenres.length) params.genre = activeGenres[0]; // server filters one genre
       const { data } = await moviesAPI.getAll(params);
       // Client-side multi-genre + quick search
@@ -38,10 +38,10 @@ export default function Browse({ mediaType = 'movie' }) {
     finally { setLoading(false); }
   }, [mediaType, sort, yearFrom, yearTo, activeGenres, quickQ]);
 
-  useEffect(() => { fetch(); }, [fetch]);
+  useEffect(() => { loadMovies(); }, [loadMovies]);
 
   const toggleGenre = (g) => setGenres(prev => prev.includes(g) ? prev.filter(x => x !== g) : [...prev, g]);
-  const clearAll    = () => { setGenres([]); setSort('popular'); setYearFrom('2000'); setYearTo('2025'); setQuickQ(''); };
+  const clearAll    = () => { setGenres([]); setSort('popular'); setYearFrom('1900'); setYearTo(new Date().getFullYear() + 5); setQuickQ(''); };
 
   const sortOptions = [
     { value: 'popular', label: 'Most Popular' },
