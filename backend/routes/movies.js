@@ -10,7 +10,7 @@ const parseGenre = (m) => ({ ...m, genre: typeof m.genre === 'string' ? JSON.par
 // GET /api/movies  — with optional filters
 router.get('/', async (req, res) => {
   try {
-    const { type, genre, sort = 'popular', yearFrom, yearTo, q, limit = 50, offset = 0 } = req.query;
+    const { type, genre, sort = 'popular', yearFrom, yearTo, q, limit = 200, offset = 0 } = req.query;
     let sql    = 'SELECT * FROM movies WHERE 1=1';
     const args = [];
 
