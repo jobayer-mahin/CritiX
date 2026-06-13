@@ -16,7 +16,7 @@ export default function Search() {
     if (!q.trim()) { setResults([]); setSearched(false); return; }
     setLoading(true); setSearched(true);
     try {
-      const { data } = await moviesAPI.getAll({ q, limit: 50 });
+      const { data } = await moviesAPI.getAll({ q, limit: 200 });
       setResults(data);
     } catch { setResults([]); }
     finally { setLoading(false); }
